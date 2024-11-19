@@ -2,28 +2,50 @@
 import {useBoardStore} from "~/stores/boardStore";
 
 const boardStore = useBoardStore();
+const route = useRoute()
+const isModalOpen = computed(() => {
+  return route.name === 'index-tasks-id'
+})
+const newColumnName: Ref<string> = ref('')
+
+function addColumn() {
+  boardStore.addColumn(newColumnName.value)
+  newColumnName.value = ''
+}
+
+function closeModal() {
+  navigateTo('/')
+}
+
 </script>
 
 <template>
   <div class="board-wrapper">
     <main class="board">
       <!--      <h1>{{ boardStore.board.name }}</h1>-->
-      <UContainer
-          v-for="column in boardStore.board.columns"
-          :key="column.name"
+      <BoardColumn
+          v-for="(column, columnIndex) in boardStore.board.columns"
+          :key="column.id"
+          :column="column"
+          :columnIndex="columnIndex"
           class="column"
-      >
-        <h2 class="mb-4">{{ column.name }}</h2>
-        <ul>
-          <li v-for="task in column.tasks" :key="task.id">
-            <UCard class="mb-4">
-              <strong>{{ task.name }}</strong>
-              <p>{{ task.description }}</p>
-            </UCard>
-          </li>
-        </ul>
+      />
+
+      <UContainer class="column">
+        <UInput
+            v-model="newColumnName"
+            type="text"
+            placeholder="Create new column"
+            icon="i-heroicons-plus-circle-solid"
+            @keyup.enter="addColumn"
+            aria-label="New column name"
+        >
+        </UInput>
       </UContainer>
     </main>
+    <div v-show="isModalOpen" class="task-bg" @click.self="closeModal">
+      <NuxtPage :key="route.fullPath"/>
+    </div>
   </div>
 </template>
 
