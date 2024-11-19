@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import {type Column, useBoardStore} from "~/stores/boardStore";
 
-defineProps<{
+const props = defineProps<{
   column: Column
   columnIndex: number
 }>()
 const boardStore = useBoardStore();
 const editNameState: Ref<boolean> = ref(false)
+const newTaskName: Ref<string> = ref('')
+
+function addTask() {
+  boardStore.addTask({
+    taskName: newTaskName.value,
+    columnIndex: props.columnIndex
+  })
+  newTaskName.value = ''
+}
 
 function deleteColumn(columnIndex: number) {
   boardStore.deleteColumn(columnIndex)
@@ -45,6 +54,15 @@ function goToTask(taskId: string) {
         </UCard>
       </li>
     </ul>
+    <UInput
+        v-model="newTaskName"
+        type="text"
+        placeholder="Create new task"
+        icon="i-heroicons-plus-circle-solid"
+        aria-label="New column name"
+        @keyup.enter="addTask"
+    >
+    </UInput>
   </UContainer>
 </template>
 
