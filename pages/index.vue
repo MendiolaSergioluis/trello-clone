@@ -13,6 +13,7 @@ function addColumn() {
   newColumnName.value = ''
 }
 
+
 function closeModal() {
   navigateTo('/')
 }

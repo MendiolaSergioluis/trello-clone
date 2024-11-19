@@ -39,7 +39,15 @@ export const useBoardStore = defineStore('boardStore', () => {
     })
   }
 
-  function deleteTask(taskId: string){
+  function moveTask({fromTaskIndex, toTaskIndex, fromColumnIndex, toColumnIndex}:
+                    { fromTaskIndex: number, toTaskIndex: number, fromColumnIndex: number, toColumnIndex: number }) {
+    // Remueve la tarea de la columna de origen y la guarda en una variable
+    const task = board.value.columns[fromColumnIndex].tasks.splice(fromTaskIndex, 1)[0]
+    // Agrega la tarea a la columna de destino
+    board.value.columns[toColumnIndex].tasks.splice(toTaskIndex, 0, task)
+  }
+
+  function deleteTask(taskId: string) {
     for (const column of board.value.columns) {
       const taskIndex = column.tasks.findIndex(task => task.id === taskId)
       if (taskIndex !== -1) {
@@ -58,10 +66,14 @@ export const useBoardStore = defineStore('boardStore', () => {
     })
   }
 
+  function moveColumn({fromColumnIndex, toColumnIndex}: { fromColumnIndex: number, toColumnIndex: number }) {
+    const column = board.value.columns.splice(fromColumnIndex, 1)[0]
+    board.value.columns.splice(toColumnIndex, 0, column)
+  }
+
   function deleteColumn(columnIndex: number) {
     board.value.columns.splice(columnIndex, 1)
   }
-
 
   return {
     // State
@@ -70,8 +82,10 @@ export const useBoardStore = defineStore('boardStore', () => {
     getTask,
     // Actions
     addTask,
+    moveTask,
     deleteTask,
     addColumn,
+    moveColumn,
     deleteColumn
   }
 })

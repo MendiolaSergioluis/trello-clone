@@ -6,6 +6,7 @@ const props = defineProps<{
   columnIndex: number
 }>()
 const boardStore = useBoardStore();
+
 const editNameState: Ref<boolean> = ref(false)
 const newTaskName: Ref<string> = ref('')
 
@@ -24,10 +25,63 @@ function deleteColumn(columnIndex: number) {
 function goToTask(taskId: string) {
   navigateTo(`/tasks/${taskId}`)
 }
+
+function pickupColumn(event: DragEvent, fromColumnIndex: number) {
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.dropEffect = 'move'
+    event.dataTransfer.setData('type', 'column')
+    event.dataTransfer.setData('from-column-index', fromColumnIndex.toString())
+  }
+}
+
+function pickupTask(
+    event: DragEvent,
+    {fromColumnIndex, fromTaskIndex}: { fromColumnIndex: number, fromTaskIndex: number }
+) {
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.dropEffect = 'move'
+
+    event.dataTransfer.setData('type', 'task')
+    event.dataTransfer.setData('from-column-index', fromColumnIndex.toString())
+    event.dataTransfer.setData('from-task-index', fromTaskIndex.toString())
+  }
+}
+
+function dropItem(event: DragEvent, {toColumnIndex, toTaskIndex}: { toColumnIndex: number, toTaskIndex?: number }) {
+  if (event.dataTransfer) {
+    const type = event.dataTransfer.getData('type')
+    const fromColumnIndex = event.dataTransfer.getData('from-column-index')
+
+    if (type === 'task') {
+      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
+
+      boardStore.moveTask({
+        fromTaskIndex: Number(fromTaskIndex),
+        toTaskIndex: toTaskIndex!,
+        fromColumnIndex: Number(fromColumnIndex),
+        toColumnIndex
+      })
+    } else if (type === 'column') {
+      boardStore.moveColumn({
+        fromColumnIndex: Number(fromColumnIndex),
+        toColumnIndex
+      })
+    }
+  }
+}
 </script>
 
 <template>
-  <UContainer class="column">
+  <UContainer
+      class="column"
+      draggable="true"
+      @dragstart.self="pickupColumn($event, columnIndex)"
+      @dragenter.prevent
+      @dragover.prevent
+      @drop.stop="dropItem($event, {toColumnIndex: columnIndex})"
+  >
     <div class="column-header mb-4">
       <div>
         <UInput
@@ -47,8 +101,20 @@ function goToTask(taskId: string) {
       </div>
     </div>
     <ul>
-      <li v-for="(task) in column.tasks" :key="task.id">
-        <UCard class="mb-4" @click="goToTask(task.id)">
+      <li v-for="(task, taskIndex) in column.tasks" :key="task.id">
+        <UCard
+            class="mb-4"
+            @click="goToTask(task.id)"
+            draggable="true"
+            @dragstart="pickupTask($event, {
+              fromColumnIndex: columnIndex,
+              fromTaskIndex: taskIndex
+            })"
+            @drop.stop="dropItem($event, {
+              toColumnIndex: columnIndex,
+              toTaskIndex: taskIndex
+            })"
+        >
           <strong>{{ task.name }}</strong>
           <p>{{ task.description }}</p>
         </UCard>
@@ -65,7 +131,6 @@ function goToTask(taskId: string) {
     </UInput>
   </UContainer>
 </template>
-
 <style scoped>
 
 </style>
