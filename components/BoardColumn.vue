@@ -123,9 +123,9 @@ function dropItem(event: DragEvent, {toColumnIndex, toTaskIndex}: { toColumnInde
     <UInput
         v-model="newTaskName"
         type="text"
-        placeholder="Create new task"
+        placeholder="Crear Nueva Tarea"
         icon="i-heroicons-plus-circle-solid"
-        aria-label="New column name"
+        aria-label="Nombre de Tarea"
         @keyup.enter="addTask"
     >
     </UInput>

@@ -1,16 +1,27 @@
 <script setup lang="ts">
+
 import { useBoardStore} from "~/stores/boardStore";
 
 const boardStore = useBoardStore()
 const route = useRoute()
-
+const toast = useToast()
 const task = computed(() => {
   return boardStore.getTask(route.params.id as string)
 })
 function deleteTask(){
+  toast.add({title: `${task.value?.name} has been deleted`, color: 'red', icon: 'i-heroicons-trash'})
   boardStore.deleteTask(route.params.id as string)
   navigateTo('/')
 }
+useHead({
+  title: `Tarea: ${task.value?.name}`,
+  meta: [
+    {
+      name: 'description',
+      content: `Tarjeta de la tarea:${task.value?.name}`
+    },
+  ]
+})
 </script>
 
 <template>

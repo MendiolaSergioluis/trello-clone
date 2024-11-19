@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useHead({
+  title: 'Tableros',
+  meta: [
+    {
+      name: 'description',
+      content: 'Página Principal: Tableros de Tareas'
+    }
+  ]
+})
 import {useBoardStore} from "~/stores/boardStore";
 
 const boardStore = useBoardStore();
@@ -22,8 +31,8 @@ function closeModal() {
 
 <template>
   <div class="board-wrapper">
+    <h1 class="text-2xl md:text-4xl font-bold text-white uppercase font-serif p-4">Tableros</h1>
     <main class="board">
-      <!--      <h1>{{ boardStore.board.name }}</h1>-->
       <BoardColumn
           v-for="(column, columnIndex) in boardStore.board.columns"
           :key="column.id"
@@ -36,10 +45,10 @@ function closeModal() {
         <UInput
             v-model="newColumnName"
             type="text"
-            placeholder="Create new column"
+            placeholder="Crear Nueva Columna"
             icon="i-heroicons-plus-circle-solid"
             @keyup.enter="addColumn"
-            aria-label="New column name"
+            aria-label="Nombre de Columna"
         >
         </UInput>
       </UContainer>
