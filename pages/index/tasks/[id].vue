@@ -9,7 +9,7 @@ const task = computed(() => {
   return boardStore.getTask(route.params.id as string)
 })
 function deleteTask(){
-  toast.add({title: `${task.value?.name} has been deleted`, color: 'red', icon: 'i-heroicons-trash'})
+  toast.add({title: `La tarea '${task.value?.name}' se ha eliminado`, color: 'red', icon: 'i-heroicons-trash'})
   boardStore.deleteTask(route.params.id as string)
   navigateTo('/')
 }

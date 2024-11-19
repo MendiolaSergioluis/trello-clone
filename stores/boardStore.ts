@@ -20,7 +20,7 @@ export type Board = {
 
 export const useBoardStore = defineStore('boardStore', () => {
   const board: Ref<Board> = useStorage('board', boardData)
-
+  const toast = useToast()
   // Tasks
   const getTask = computed(() => {
     return (taskId: string) => {
@@ -32,6 +32,8 @@ export const useBoardStore = defineStore('boardStore', () => {
   })
 
   function addTask({taskName, columnIndex}: { taskName: string, columnIndex: number }) {
+    toast.add({title: `Se agregó la tarea '${taskName}'.`, color: 'green', icon: 'i-heroicons-plus'})
+
     board.value.columns[columnIndex].tasks.push({
       id: uuid(),
       name: taskName,
@@ -59,6 +61,8 @@ export const useBoardStore = defineStore('boardStore', () => {
 
   // Columns
   function addColumn(columnName: string) {
+    // Mostrar notificación de columna añadida
+    toast.add({title: `Se agregó la columna '${columnName}'.`, color: 'green', icon: 'i-heroicons-plus'})
     board.value.columns.push({
       id: String(Date.now()),
       name: columnName,
@@ -72,6 +76,10 @@ export const useBoardStore = defineStore('boardStore', () => {
   }
 
   function deleteColumn(columnIndex: number) {
+    const columnName = board.value.columns[columnIndex].name
+    // Muestra notificación de columna eliminada
+    toast.add({title: `La columna '${columnName}' se ha eliminado`, color: 'red', icon: 'i-heroicons-trash'})
+
     board.value.columns.splice(columnIndex, 1)
   }
 
