@@ -1,4 +1,43 @@
 {
   "name": "task-board",
-  "columns": []
+  "columns": [
+    {
+      "id": "1732055367281",
+      "name": "Pendientes",
+      "tasks": [
+        {
+          "id": "c15618ad-abe6-4a62-8dbc-f43b7d2cb1d7",
+          "name": "Tarea de Ejemplo",
+          "description": "Puedes hacer click para modificar el contenido ó eliminar."
+        }
+      ]
+    },
+    {
+      "id": "1732055372001",
+      "name": "En Curso",
+      "tasks": [
+        {
+          "id": "46888a41-473b-4b69-9c53-238c767bc4dc",
+          "name": "Intenta Arrastrar la Tarea",
+          "description": "Puedes hacer click y arrastrar la tarea al tablero que desees..."
+        },
+        {
+          "id": "2b3f6606-15e3-444c-a3df-a2bb9949a365",
+          "name": "También puedes arrastrar la columna",
+          "description": "Arrastra sobre otra para sustituir la posición."
+        }
+      ]
+    },
+    {
+      "id": "1732055376888",
+      "name": "Terminados",
+      "tasks": [
+        {
+          "id": "2da202d3-0562-4357-96a5-c4214b7c80f1",
+          "name": "Crea Columnas a tu medida",
+          "description": "Al final a la derecha puedes ver un campo para crear nuevas columnas. Puedes hacer click, dar un nombre y presionar 'Enter' para crear."
+        }
+      ]
+    }
+  ]
 }

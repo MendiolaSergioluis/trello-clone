@@ -38,9 +38,9 @@ useHead({
             icon="i-heroicons-trash"
             color="red"
             @click="deleteTask"
-        >Delete Task</UButton>
+        >Eliminar Tarea</UButton>
       </template>
-      <template v-else>Task not found</template>
+      <template v-else>Tarea No Encontrada</template>
     </div>
   </div>
 </template>
