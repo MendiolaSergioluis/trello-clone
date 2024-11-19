@@ -28,10 +28,10 @@ useHead({
   <div class="task-wrapper">
     <div class="task-view">
       <template v-if="task">
-        <UFormGroup label="Name" class="w-full mb-4">
+        <UFormGroup label="Nombre" class="w-full mb-4">
           <UInput type="text" v-model="task.name"/>
         </UFormGroup>
-        <UFormGroup label="Description" class="w-full mb-4">
+        <UFormGroup label="Descripción" class="w-full mb-4">
           <UTextarea v-model="task.description"/>
         </UFormGroup>
         <UButton
